@@ -11,13 +11,13 @@ public class Watergoal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private int price;
+    private int ml;
 
     public Watergoal() {}
 
-    public Watergoal(String name, int price) {
+    public Watergoal(String name, int ml) {
         this.name = name;
-        this.price = price;
+        this.ml = ml;
     }
 
     public Long getId() {
@@ -36,12 +36,12 @@ public class Watergoal {
         this.name = name;
     }
 
-    public int getPrice() {
-        return price;
+    public int getMl() {
+        return ml;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
+    public void setMl(int price) {
+        this.ml = price;
     }
 
     @Override
@@ -51,7 +51,7 @@ public class Watergoal {
 
         Watergoal watergoal = (Watergoal) o;
 
-        if (getPrice() != watergoal.getPrice()) return false;
+        if (getMl() != watergoal.getMl()) return false;
         if (getId() != null ? !getId().equals(watergoal.getId()) : watergoal.getId() != null) return false;
         return getName() != null ? getName().equals(watergoal.getName()) : watergoal.getName() == null;
     }
@@ -60,7 +60,7 @@ public class Watergoal {
     public int hashCode() {
         int result = getId() != null ? getId().hashCode() : 0;
         result = 31 * result + (getName() != null ? getName().hashCode() : 0);
-        result = 31 * result + getPrice();
+        result = 31 * result + getMl();
         return result;
     }
 
@@ -69,7 +69,7 @@ public class Watergoal {
         return "Watergoal{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", price=" + price +
+                ", ml=" + ml +
                 '}';
     }
 }
