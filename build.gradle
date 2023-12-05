@@ -19,13 +19,19 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'junit:junit:4.13.1'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.postgresql:postgresql'
+	runtimeOnly 'org.postgresql:postgresql'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
+
+test {
+	environment "JDBC_DATASOURCE_URL", System.getenv('JDBC_DATASOURCE_URL')
+	environment "JDBC_DATASOURCE_USERNAME", System.getenv('JDBC_DATASOURCE_USERNAME')
+	environment "JDBC_DATASOURCE_PASSWORD", System.getenv('JDBC_DATASOURCE_PASSWORD')
+}
 tasks.named('test') {
 	useJUnitPlatform()
 }
