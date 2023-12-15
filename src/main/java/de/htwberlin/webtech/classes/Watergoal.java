@@ -1,40 +1,25 @@
 package de.htwberlin.webtech.classes;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
+
+import java.util.Set;
 
 @Entity
 public class Watergoal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
     private int ml;
 
-    public Watergoal() {}
+    protected Watergoal() {}
 
-    public Watergoal(String name, int ml) {
-        this.name = name;
-        this.ml = ml;
-    }
+    @ManyToOne
+    @JoinColumn(name = "accoundID", referencedColumnName = "id")
+    private Account user;
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public int getMl() {
@@ -46,30 +31,9 @@ public class Watergoal {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Watergoal)) return false;
-
-        Watergoal watergoal = (Watergoal) o;
-
-        if (getMl() != watergoal.getMl()) return false;
-        if (getId() != null ? !getId().equals(watergoal.getId()) : watergoal.getId() != null) return false;
-        return getName() != null ? getName().equals(watergoal.getName()) : watergoal.getName() == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = getId() != null ? getId().hashCode() : 0;
-        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
-        result = 31 * result + getMl();
-        return result;
-    }
-
-    @Override
     public String toString() {
         return "Watergoal{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
                 ", ml=" + ml +
                 '}';
     }

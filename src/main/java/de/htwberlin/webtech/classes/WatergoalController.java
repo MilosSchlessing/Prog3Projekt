@@ -46,7 +46,6 @@ public class WatergoalController {
         Watergoal existingWatergoal = service.get(watergoalId);
 
         if (existingWatergoal != null) {
-            existingWatergoal.setName(updatedWatergoal.getName());
             existingWatergoal.setMl(updatedWatergoal.getMl());
             return service.save(existingWatergoal);
         } else {
