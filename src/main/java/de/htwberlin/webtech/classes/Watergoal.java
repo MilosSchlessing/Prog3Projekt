@@ -8,15 +8,16 @@ import java.util.Set;
 @Entity
 public class Watergoal {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private int ml;
-
-    protected Watergoal() {}
 
     @ManyToOne
-    @JoinColumn(name = "accoundID", referencedColumnName = "id")
-    private Account user;
+    @JoinColumn(name = "water_goal_id")
+    private Watergoal waterGoal;
+    private int ml;
+    private String name;
+
+    public Watergoal() {}
 
     public Long getId() {
         return id;
@@ -30,11 +31,20 @@ public class Watergoal {
         this.ml = price;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name){
+        this.name = name;
+    }
+
     @Override
     public String toString() {
         return "Watergoal{" +
                 "id=" + id +
                 ", ml=" + ml +
+                ", name=" + name + '\'' +
                 '}';
     }
 }
