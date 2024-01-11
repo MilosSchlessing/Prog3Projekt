@@ -81,7 +81,6 @@ public class WatergoalControllerTest {
     }
     @Test
     public void testSendReminderEmail1() {
-        // Rufen Sie die Methode sendReminderEmail auf
         emailService.sendReminderEmail("milos.8773@gmail.com", "Test Subject", "Test Text");
     }
 }
