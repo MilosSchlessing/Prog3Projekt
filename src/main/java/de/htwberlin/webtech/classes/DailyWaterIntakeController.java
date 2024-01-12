@@ -8,7 +8,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/dailyWaterIntake")
-@CrossOrigin(origins = {"http://localhost:8081", "http://localhost:8082"})
+@CrossOrigin(origins = {"http://localhost:8081", "http://localhost:8082", "https://frontend-ivh3.onrender.com/"})
 public class DailyWaterIntakeController {
 
     private final DailyWaterIntakeService service;

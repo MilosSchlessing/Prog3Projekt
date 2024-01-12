@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:8081", "http://localhost:8082"})
+@CrossOrigin(origins = {"http://localhost:8081", "http://localhost:8082", "https://frontend-ivh3.onrender.com"})
 public class WatergoalController {
 
     @Autowired

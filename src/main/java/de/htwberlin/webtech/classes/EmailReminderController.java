@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/emailReminders")
-@CrossOrigin(origins = {"http://localhost:8081", "http://localhost:8082"})
+@CrossOrigin(origins = {"http://localhost:8081", "http://localhost:8082", "https://frontend-ivh3.onrender.com"})
 public class EmailReminderController {
     private final EmailReminderService emailReminderService;
 
