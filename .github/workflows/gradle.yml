@@ -25,3 +25,7 @@ jobs:
         run: chmod +x gradlew
       - name: Run Backend Tests
         run: ./gradlew test
+        env:
+          JDBC_DATASOURCE_URL: ${{ secrets.JDBC_DATASOURCE_URL }}
+          JDBC_DATASOURCE_USERNAME: ${{ secrets.JDBC_DATASOURCE_USERNAME }}
+          JDBC_DATASOURCE_PASSWORD: ${{ secrets.JDBC_DATASOURCE_PASSWORD }}
