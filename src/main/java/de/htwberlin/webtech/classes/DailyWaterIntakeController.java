@@ -1,6 +1,7 @@
 package de.htwberlin.webtech.classes;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,4 +32,14 @@ public class DailyWaterIntakeController {
     public List<DailyWaterIntake> findByWaterGoalId(@PathVariable Long id) {
         return service.findByWaterGoalId(id);
     }
+
+    @GetMapping("/{id}/{date}")
+    public DailyWaterIntake findByWaterGoalIdAndDate(@PathVariable Long id, @PathVariable String date) {
+        return service.findByWaterGoalIdAndDate(id, date);
+    }
+    @PutMapping("/{id}/{date}")
+    public DailyWaterIntake update(@PathVariable Long id, @PathVariable String date, @RequestBody DailyWaterIntake newDailyWaterIntake) throws ChangeSetPersister.NotFoundException {
+        return service.update(id, date, newDailyWaterIntake);
+    }
+
 }

@@ -22,4 +22,9 @@ public class EmailReminderController {
     public EmailReminder getEmailReminder(@PathVariable String email) {
         return emailReminderService.findByEmail(email);
     }
+
+    @PostMapping("/enableReminder/{id}")
+    public void enableReminder(@PathVariable Long id) {
+        emailReminderService.enableReminder(id);
+    }
 }

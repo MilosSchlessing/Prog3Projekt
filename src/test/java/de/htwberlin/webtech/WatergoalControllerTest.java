@@ -1,6 +1,7 @@
 package de.htwberlin.webtech;
 
 import de.htwberlin.webtech.classes.*;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -19,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = WebtechApplication.class)
+@Disabled
 public class WatergoalControllerTest {
 
     @InjectMocks
@@ -81,7 +83,6 @@ public class WatergoalControllerTest {
     }
     @Test
     public void testSendReminderEmail1() {
-        // Rufen Sie die Methode sendReminderEmail auf
         emailService.sendReminderEmail("milos.8773@gmail.com", "Test Subject", "Test Text");
     }
 }

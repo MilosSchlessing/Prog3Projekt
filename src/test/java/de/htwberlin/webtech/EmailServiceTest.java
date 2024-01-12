@@ -1,35 +1,36 @@
 package de.htwberlin.webtech;
 
 import de.htwberlin.webtech.classes.EmailService;
-import de.htwberlin.webtech.classes.WebtechApplication;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-@SpringBootTest(classes = WebtechApplication.class)
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+
+
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.any;
+import static org.mockito.MockitoAnnotations.openMocks;
+
 public class EmailServiceTest {
-    @Autowired
+
+    @Mock
+    private JavaMailSender emailSender;
+
+    @InjectMocks
     private EmailService emailService;
+
     @Test
     public void testSendReminderEmail() {
-        // Erstellen Sie einen Mock des JavaMailSender
-        JavaMailSender emailSender = Mockito.mock(JavaMailSender.class);
+        openMocks(this);
 
-        // Erstellen Sie eine Instanz des EmailService mit dem Mock
-        EmailService emailService = new EmailService(emailSender);
+        String to = "test@example.com";
+        String subject = "Test Subject";
+        String text = "Test Text";
 
-        // Rufen Sie die Methode sendReminderEmail auf
-        emailService.sendReminderEmail("milos.8773@gmail.com", "Test Subject", "Test Text");
+        emailService.sendReminderEmail(to, subject, text);
 
-        // Überprüfen Sie, ob die Methode send des JavaMailSender einmal aufgerufen wurde
-        Mockito.verify(emailSender, Mockito.times(1)).send(Mockito.any(SimpleMailMessage.class));
-    }
-    @Test
-    public void testSendReminderEmail1() {
-        // Rufen Sie die Methode sendReminderEmail auf
-        emailService.sendReminderEmail("milos.8773@gmail.com", "Test Subject", "Test Text");
+        verify(emailSender, times(1)).send(any(SimpleMailMessage.class));
     }
 }
