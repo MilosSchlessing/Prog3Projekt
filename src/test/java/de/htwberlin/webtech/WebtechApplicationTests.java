@@ -9,10 +9,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = WebtechApplication.class)
-@Disabled
 class WebtechApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }
