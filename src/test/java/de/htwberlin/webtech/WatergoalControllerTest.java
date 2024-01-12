@@ -1,88 +1,103 @@
 package de.htwberlin.webtech;
-
-import de.htwberlin.webtech.classes.*;
-import org.junit.jupiter.api.Disabled;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import de.htwberlin.webtech.classes.Watergoal;
+import de.htwberlin.webtech.classes.WatergoalController;
+import de.htwberlin.webtech.classes.WatergoalService;
+import de.htwberlin.webtech.classes.WebtechApplication;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.hamcrest.Matchers.containsString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(classes = WebtechApplication.class)
-@Disabled
+@AutoConfigureMockMvc
 public class WatergoalControllerTest {
 
-    @InjectMocks
-    private WatergoalController controller;
-
-    @Mock
-    private WatergoalService service;
     @Autowired
-    private EmailService emailService;
+    private MockMvc mockMvc;
 
+    @MockBean
+    private WatergoalService service;
 
-    @Test
-    public void testCreateWatergoal() {
-        Watergoal goal = new Watergoal();
-        when(service.save(goal)).thenReturn(goal);
-        assertEquals(goal, controller.createWatergoal(goal));
+    private Watergoal watergoal;
+    private ObjectMapper mapper;
+
+    @BeforeEach
+    public void setUp() {
+        watergoal = new Watergoal();
+        watergoal.setMl(500);
+
+        mapper = new ObjectMapper();
     }
 
     @Test
-    public void testGetWatergoal() {
-        Watergoal goal = new Watergoal();
-        when(service.get(1L)).thenReturn(goal);
-        assertEquals(goal, controller.getWatergoal("1"));
+    public void testCreateWatergoal() throws Exception {
+        when(service.save(any(Watergoal.class))).thenReturn(watergoal);
+
+        String expected = mapper.writeValueAsString(watergoal);
+
+        mockMvc.perform(post("/watergoal")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(watergoal)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().string(containsString(expected)));
     }
 
     @Test
-    public void testGetAllWatergoals() {
-        Watergoal goal1 = new Watergoal();
-        Watergoal goal2 = new Watergoal();
-        when(service.getAll()).thenReturn(Arrays.asList(goal1, goal2));
-        List<Watergoal> goals = controller.getAllThings();
-        assertEquals(2, goals.size());
-        assertEquals(goal1, goals.get(0));
-        assertEquals(goal2, goals.get(1));
+    public void testGetWatergoal() throws Exception {
+        when(service.get(anyLong())).thenReturn(watergoal);
+
+        String expected = mapper.writeValueAsString(watergoal);
+
+        mockMvc.perform(get("/watergoal/1"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().string(containsString(expected)));
     }
 
     @Test
-    public void testUpdateWatergoal() {
-        Watergoal existingGoal = new Watergoal();
-        Watergoal updatedGoal = new Watergoal();
-        updatedGoal.setMl(2000);
-        when(service.get(1L)).thenReturn(existingGoal);
-        when(service.save(existingGoal)).thenReturn(updatedGoal);
-        assertEquals(updatedGoal, controller.updateWatergoal("1", updatedGoal));
+    public void testGetAllThings() throws Exception {
+        List<Watergoal> watergoals = Arrays.asList(watergoal);
+        when(service.getAll()).thenReturn(watergoals);
+
+        String expected = mapper.writeValueAsString(watergoals);
+
+        mockMvc.perform(get("/watergoal"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().string(containsString(expected)));
     }
 
     @Test
-    public void testSendReminderEmail() {
-        // Erstellen Sie einen Mock des JavaMailSender
-        JavaMailSender emailSender = Mockito.mock(JavaMailSender.class);
+    public void testUpdateWatergoal() throws Exception {
+        when(service.get(anyLong())).thenReturn(watergoal);
+        when(service.save(any(Watergoal.class))).thenReturn(watergoal);
 
-        // Erstellen Sie eine Instanz des EmailService mit dem Mock
-        EmailService emailService = new EmailService(emailSender);
+        String expected = mapper.writeValueAsString(watergoal);
 
-        // Rufen Sie die Methode sendReminderEmail auf
-        emailService.sendReminderEmail("milos.8773@gmail.com", "Test Subject", "Test Text");
-
-        // Überprüfen Sie, ob die Methode send des JavaMailSender einmal aufgerufen wurde
-        Mockito.verify(emailSender, Mockito.times(1)).send(Mockito.any(SimpleMailMessage.class));
-    }
-    @Test
-    public void testSendReminderEmail1() {
-        emailService.sendReminderEmail("milos.8773@gmail.com", "Test Subject", "Test Text");
+        mockMvc.perform(put("/watergoal/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(watergoal)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().string(containsString(expected)));
     }
 }
