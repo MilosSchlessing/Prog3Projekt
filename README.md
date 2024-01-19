@@ -8,7 +8,8 @@ Funktion:
 4. tagesziele editieren
 5. motivationsmail erhalten
 6. tracking diagramm erstellen
-7. tracking diagramm herunterladen
+7. Durchschnitt errechnen
+8. tracking diagramm herunterladen
 
 Wir haben deployed: https://frontend-ivh3.onrender.com/
 Die Datenbank braucht immer ein bisschen, um zu laden.
